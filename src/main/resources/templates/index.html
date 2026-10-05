@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>My Blog</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f8; margin:0; color:#222; }
+    header { background:#1f4e79; color:#fff; padding:20px 0; text-align:center; }
+    main { max-width:760px; margin:24px auto; padding:0 16px; }
+    .card { background:#fff; border-radius:8px; padding:18px; margin-bottom:16px; box-shadow:0 1px 3px rgba(0,0,0,.1); }
+    .meta { color:#777; font-size:13px; margin-bottom:8px; }
+    input, textarea { width:100%; padding:8px; margin:6px 0 12px; border:1px solid #ccc; border-radius:4px; box-sizing:border-box; font-family:inherit; }
+    button { background:#1f4e79; color:#fff; border:0; padding:9px 18px; border-radius:4px; cursor:pointer; }
+    button.del { background:#b3261e; padding:5px 12px; font-size:12px; }
+    a { color:#1f4e79; text-decoration:none; }
+    form.inline { display:inline; }
+  </style>
+</head>
+<body>
+  <header><h1>My Blog</h1></header>
+  <main>
+    <div class="card">
+      <h2>Write a post</h2>
+      <form th:action="@{/posts}" method="post">
+        <label>Title</label>
+        <input name="title" required maxlength="150">
+        <label>Author</label>
+        <input name="author" maxlength="80">
+        <label>Content</label>
+        <textarea name="content" rows="5" required maxlength="5000"></textarea>
+        <button type="submit">Publish</button>
+      </form>
+    </div>
+
+    <p th:if="${#lists.isEmpty(posts)}">No posts yet. Be the first to write one.</p>
+
+    <div class="card" th:each="p : ${posts}">
+      <h2><a th:href="@{/posts/{id}(id=${p.id})}" th:text="${p.title}">Title</a></h2>
+      <div class="meta">
+        By <span th:text="${p.author}">author</span> on
+        <span th:text="${#temporals.format(p.createdAt, 'dd MMM yyyy HH:mm')}">date</span>
+      </div>
+      <p th:text="${#strings.abbreviate(p.content, 200)}">content</p>
+      <a th:href="@{/posts/{id}(id=${p.id})}">Read more</a>
+      <form class="inline" th:action="@{/posts/{id}/delete(id=${p.id})}" method="post">
+        <button class="del" type="submit">Delete</button>
+      </form>
+    </div>
+  </main>
+</body>
+</html>

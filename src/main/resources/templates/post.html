@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title th:text="${post.title}">Post</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f8; margin:0; color:#222; }
+    header { background:#1f4e79; color:#fff; padding:20px 0; text-align:center; }
+    main { max-width:760px; margin:24px auto; padding:0 16px; }
+    .card { background:#fff; border-radius:8px; padding:22px; box-shadow:0 1px 3px rgba(0,0,0,.1); white-space:pre-wrap; }
+    .meta { color:#777; font-size:13px; margin-bottom:12px; white-space:normal; }
+    a { color:#1f4e79; text-decoration:none; }
+  </style>
+</head>
+<body>
+  <header><h1>My Blog</h1></header>
+  <main>
+    <p><a th:href="@{/}">&larr; Back to all posts</a></p>
+    <div class="card">
+      <h2 th:text="${post.title}">Title</h2>
+      <div class="meta">
+        By <span th:text="${post.author}">author</span> on
+        <span th:text="${#temporals.format(post.createdAt, 'dd MMM yyyy HH:mm')}">date</span>
+      </div>
+      <div th:text="${post.content}">content</div>
+    </div>
+  </main>
+</body>
+</html>
